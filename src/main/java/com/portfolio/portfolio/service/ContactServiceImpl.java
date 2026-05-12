@@ -1,6 +1,7 @@
 package com.portfolio.portfolio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -11,6 +12,9 @@ public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private JavaMailSender mailSender;
+    
+    @Value("${MAIL_USERNAME}")
+    private String mailUsername;
 
     @Async
 	@Override
@@ -18,8 +22,7 @@ public class ContactServiceImpl implements ContactService {
 		 SimpleMailMessage message =
 	                new SimpleMailMessage();
 
-	        message.setTo("yourgmail.com"
-	        		+ "");
+	        message.setTo(mailUsername);
 
 	        message.setSubject(
 	                "Portfolio Contact: " +
