@@ -12,7 +12,7 @@ import com.portfolio.portfolio.service.ContactService;
 
 @RestController
 @RequestMapping("/api/contact")
-@CrossOrigin(origins="http://localhost:5173")
+@CrossOrigin(origins = "https://gunderao.netlify.app")
 public class ContactController {
 
 	@Autowired
