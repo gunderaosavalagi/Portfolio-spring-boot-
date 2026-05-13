@@ -13,32 +13,33 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private JavaMailSender mailSender;
     
-    @Value("${MAIL_USERNAME}")
+    // Adding ":yourname@example.com" provides a fallback value
+    @Value("${MAIL_USERNAME:yourname@example.com}")
     private String mailUsername;
 
     @Async
-	@Override
-	public void sendEmail(com.portfolio.portfolio.dto.ContactRequest request) {
-		 SimpleMailMessage message =
-	                new SimpleMailMessage();
+    @Override
+    public void sendEmail(com.portfolio.portfolio.dto.ContactRequest request) {
+         SimpleMailMessage message = new SimpleMailMessage();
 
-	        message.setTo(mailUsername);
+        message.setTo(mailUsername);
 
-	        message.setSubject(
-	                "Portfolio Contact: " +
-	                request.getSubject()
-	        );
+        message.setSubject(
+                "Portfolio Contact: " +
+                request.getSubject()
+        );
 
-	        message.setText(
-	                "Name: " + request.getName() + "\n" +
-	                "Email: " + request.getEmail() + "\n\n" +
-	                "Message:\n" + request.getMessage()
-	        );
-	       
-	        try {
-	        mailSender.send(message);
-	        }catch(Exception e) {
-	    	throw new  RuntimeException("Failed to send email");
-	        }
+        message.setText(
+                "Name: " + request.getName() + "\n" +
+                "Email: " + request.getEmail() + "\n\n" +
+                "Message:\n" + request.getMessage()
+        );
+        
+        try {
+            mailSender.send(message);
+        } catch(Exception e) {
+            // It is good practice to log the actual exception 'e' here
+            throw new RuntimeException("Failed to send email", e);
+        }
     }
 }
